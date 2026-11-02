@@ -18,7 +18,7 @@ function MyOrders() {
       }
 
       try {
-        const response = await fetch(`http://localhost:5000/api/orders?email=${encodeURIComponent(user.email)}`)
+        const response = await fetch(`https://craftcrave.onrender.com/api/orders?email=${encodeURIComponent(user.email)}`)
 
         if (!response.ok) {
           throw new Error("Unable to fetch orders")

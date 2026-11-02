@@ -14,7 +14,7 @@ function Profile() {
       return
     }
 
-    fetch(`http://localhost:5000/api/users/${encodeURIComponent(email)}`)
+    fetch(`https://craftcrave.onrender.com/api/users/${encodeURIComponent(email)}`)
       .then(res => {
         if (!res.ok) throw new Error("Unable to fetch profile")
         return res.json()

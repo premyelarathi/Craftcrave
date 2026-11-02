@@ -22,7 +22,7 @@ function AdminOrders() {
   // Fetch Orders
   const getOrders = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/orders")
+      const response = await fetch("https://craftcrave.onrender.com/api/orders")
 
       if (!response.ok) {
         throw new Error("Unable to fetch orders")
@@ -51,7 +51,7 @@ function AdminOrders() {
   const updateStatus = async (id, newStatus) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/orders/${id}/status`,
+        `https://craftcrave.onrender.com/api/orders/${id}/status`,
         {
           method: "PUT",
           headers: {

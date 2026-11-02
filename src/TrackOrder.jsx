@@ -40,7 +40,7 @@ function TrackOrder() {
     async function getOrder() {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/orders/${id}`
+          `https://craftcrave.onrender.com/api/orders/${id}`
         )
 
         if (!response.ok) {
@@ -68,7 +68,7 @@ function TrackOrder() {
 
     async function updateStatus(nextStatus) {
       try {
-        await fetch(`http://localhost:5000/api/orders/${id}/status`, {
+        await fetch(`https://craftcrave.onrender.com/api/orders/${id}/status`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"
@@ -82,7 +82,7 @@ function TrackOrder() {
 
     async function updateLocation(index) {
       try {
-        await fetch(`http://localhost:5000/api/orders/${id}/tracking`, {
+        await fetch(`https://craftcrave.onrender.com/api/orders/${id}/tracking`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"
