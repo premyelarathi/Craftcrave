@@ -2,7 +2,7 @@ import logo from '../../assets/Images/logo.png'
 
 function Logo() {
   return (
-    <img className="h-40 w-80 " src={logo} alt="CraveCraft" />
+    <img className="h-20 w-50 " src={logo} alt="CraveCraft" />
   )
 }
 

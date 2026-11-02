@@ -1,206 +1,213 @@
 
 import { useState, useEffect } from "react"
-import { useLocation } from "react-router-dom"
-
+import { useLocation, useSearchParams } from "react-router-dom"
+import { foodItems } from "./Meals"
 import banner from "./assets/Images/banner.jpeg"
-import item1 from "./assets/Images/Item1.png"
-import item2 from "./assets/Images/item2.png"
-import item3 from "./assets/Images/item3.jpeg"
-import item4 from "./assets/Images/item4.jpg"
-import item6 from "./assets/Images/item6.jpeg"
-import item7 from "./assets/Images/item7.jpeg"
-import item8 from "./assets/Images/item8.jpeg"
-import item9 from "./assets/Images/item9.png"
-import item11 from "./assets/Images/item11.jpeg"
-import item12 from "./assets/Images/item12.jpeg"
-import item13 from "./assets/Images/item13.jpeg"
-import item14 from "./assets/Images/item14.jpeg"
-import Chickkemm from "./assets/Images/Chickkemm.jpeg"
-import sprouts from "./assets/Images/sprouts.jpeg"
-import Appepper from "./assets/Images/Appepper.jpeg"
-import Tomato from "./assets/Images/Tomato.jpeg"
-import Lemon from "./assets/Images/Lemon.jpeg"
-import Chapathichick from "./assets/Images/Chapathichick.jpeg" 
-import Curd from "./assets/Images/Curd.jpeg"
-import Sambar from "./assets/Images/Sambar.jpeg"
-import Vegpulao from "./assets/Images/Vegpulao.jpeg"
-import Chapathipann from "./assets/Images/Chapathipann.jpeg"
-import MushBir from "./assets/Images/MushBir.jpeg"
-import Pannbir from "./assets/Images/Pannbir.jpeg"
-import Soybir from "./assets/Images/Soybir.jpeg"
-import Gobirice from "./assets/Images/Gobirice.jpeg"
-import SpicyApchibir from "./assets/Images/SpicyApchibir.jpeg"
-import Chickbir from "./assets/Images/Chickbir.jpeg"
-import Boileggsal from "./assets/Images/Boileggsal.jpeg"
-import Chsal from "./assets/Images/Chsal.jpeg"
-import Cucucorsal from "./assets/Images/Cucucorsal.jpeg"
-import pannersal from "./assets/Images/pannersal.jpeg"
-import Peanutsal from "./assets/Images/Peanutsal.jpeg"
-import Sprsal from "./assets/Images/Sprsal.jpeg"
-import Masdosa from "./assets/Images/Masdosa.jpeg"
-import Ragidosa from "./assets/Images/Ragidosa.jpeg"
-import Dosachut from "./assets/Images/Dosachut.jpeg"
-import Vegbr from "./assets/Images/Vegbr.jpeg"
-import Vegpoha from "./assets/Images/Vegpoha.jpeg"
-import Idlisam from "./assets/Images/Idlisam.jpeg"
-import 
 import Categories from "./Categories"
 import Footer from "./Footer"
 
-function Home() {
+function Home({ cartItems, setCartItems }) {
   const [activeCategory, setActiveCategory] = useState("")
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [quantity, setQuantity] = useState(1)
   const location = useLocation()
+  const [searchParams] = useSearchParams()
+  const searchQuery = searchParams.get("search")?.toLowerCase().trim() || ""
+
+  const restaurantNames = {
+    "Protein-Rich": "Fit Kitchen",
+    "Everyday": "Daily Meals",
+    "Biryani & Rice Bowls": "Spice Hub",
+    "Salads & Light": "Green Bowl",
+    "Breakfast": "Morning Kitchen",
+    "Smoothies & Drinks": "Fresh Sip"
+  }
 
   useEffect(() => {
     if (location.state && location.state.category) {
       setActiveCategory(location.state.category)
-
-      const mealsSection = document.getElementById("meals")
-
-      if (mealsSection) {
-        mealsSection.scrollIntoView({ behavior: "smooth" })
-      }
+      document.getElementById("meals")?.scrollIntoView({ behavior: "smooth" })
     }
   }, [location.state])
 
-  const items = [
-    [1, "Egg and Rice Power Bowl", 99, item1, ["Protein-Rich", "Biryani & Rice Bowls"], "non-veg"],
-    [2, "Dal Rice with Vegetables", 89, item2, ["Everyday"], "veg"],
-    [3, "Chickpea Power Bowl", 109, item3, ["Protein-Rich"], "veg"],
-    [4, "Paneer Protein Bowl", 139, item4, ["Protein-Rich"], "veg"],
-    [6, "Chicken Breast with Brown Rice", 179, item6, ["Protein-Rich", "Biryani & Rice Bowls"], "non-veg"],
-    [7, "Banana Peanut Butter Smoothie", 90, item7, ["Smoothies & Drinks"], "veg"],
-    [8, "Masala Oats Power Bowl", 140, item8, ["Breakfast"], "veg"],
-    [9, "Soya Chunk Protein Bowl", 160, item9, ["Protein-Rich"], "veg"],
-   [10, "Gobi Manchurian Rice", 190, Gobirice, ["Biryani & Rice Bowls"], "veg"],
-    [11, "Grilled Paneer Salad Bowl", 350, item11, ["Salads & Light"], "veg"],
-    [12, "Grilled Chicken Salad", 400, item12, ["Salads & Light"], "non-veg"],
-    [13, "Egg and Sweet Potato Bowl", 550, item13, ["Breakfast"], "non-veg"],
-    [14, "Chocolate Banana Oats Smoothie", 450, item14, ["Smoothies & Drinks"], "veg"],
-    [16, "Chicken Keema Rice Bowl", 450, Chickkemm, ["Protein-Rich"], "non-veg"],
-    [17, "Mixed Sprouts Protein Bowl", 450, sprouts, ["Protein-Rich"], "veg"],
-    [18, "Andhra Pepper Chicken Bowl", 450, Appepper, ["Protein-Rich"], "non-veg"],
-    [19, "Tomato Rice", 450, Tomato, ["Everyday"], "veg"],
-    [20, "Lemon Rice", 450, Lemon, ["Everyday"], "veg"],
-    [21, "Chapathi With Chicken", 450, Chapathichick, ["Everyday"], "non-veg"],
-    [22, "Chapathi With Paneer", 450, Chapathipann, ["Everyday"], "veg"],
-    [23, "Curd Rice", 150, Curd, ["Everyday"], "veg"],
-    [24, "Veg Pulao", 350, Vegpulao, ["Everyday"], "veg"],
-    [26, "Sambar Rice", 150, Sambar, ["Everyday"], "veg"],
-    [28, "Mushroom Biryani", 150, MushBir, ["Biryani & Rice Bowls"], "veg"],
-    [29, "Paneer Biryani", 180, Pannbir, ["Biryani & Rice Bowls"], "veg"],
-    [30, "Soya Biryani", 160, Soybir, ["Biryani & Rice Bowls"], "veg"],
-    [31, "Spicy Andhra Chicken Biryani", 200, SpicyApchibir, ["Biryani & Rice Bowls"], "non-veg"],
-    [32, "Chicken Biryani", 190, Chickbir, ["Biryani & Rice Bowls"], "non-veg"],
-    [34, "Panner Tikka Salad", 199, pannersal, ["Salads & Light"], "veg"],
-    [35, "Peanut Veggie Salad", 199, Peanutsal, ["Salads & Light"], "veg"],
-    [36, "Sprouts Salad", 199, Sprsal, ["Salads & Light"], "veg"],
-    [37, "Chickpea Salad", 199, Chsal, ["Salads & Light"], "veg"],
-    [38, "Cucumber Corn Salad", 399, Cucucorsal, ["Salads & Light"], "veg"],
-    [39, "Boil Egg Salad", 299,Boileggsal, ["Salads & Light"], "non-veg"],
-    [40, "Masala dosa", 199, Masdosa, ["Breakfast"], "veg"],
-    [41, "Ragi Dosa", 99, Ragidosa, ["Breakfast"], "veg"],
-    [43, "Vegetables Upma", 99, Vegbr, ["Breakfast"], "veg"],
-    [44, "Vegetable Poha", 199, Vegpoha, ["Breakfast"], "veg"],
-    [45, "Dosa with Chutney", 99, Dosachut, ["Breakfast"], "veg"],
-    [46, "Idli with Sambar ", 199, Idlisam, ["Breakfast"], "veg"],
-  ] 
+  const recommendedItems = [
+    foodItems[0],
+    foodItems[1],
+    foodItems[2],
+    foodItems[6],
+    foodItems[9],
+    foodItems[11],
+    foodItems[15],
+    foodItems[18],
+    foodItems[23],
+    foodItems[33],
+    foodItems[41],
+    foodItems[44]
+  ]
 
-  const filteredItems = items.filter((item) => {
-    if (activeCategory === "") {
-      return true
+  const displayItems = activeCategory === "" && !searchQuery
+    ? recommendedItems
+    : foodItems
+
+  const filteredItems = displayItems.filter(item => {
+    const matchesCategory = activeCategory === "" || item[4].includes(activeCategory)
+    const matchesSearch =
+      item[1].toLowerCase().includes(searchQuery) ||
+      restaurantNames[item[4][0]].toLowerCase().includes(searchQuery) ||
+      item[4].some(category => category.toLowerCase().includes(searchQuery))
+    return matchesCategory && matchesSearch
+  })
+
+  function openDetails(item) {
+    setSelectedItem(item)
+    setQuantity(1)
+  }
+
+  function addToCart() {
+    const newItem = {
+      id: selectedItem[0],
+      name: selectedItem[1],
+      price: selectedItem[2],
+      image: selectedItem[3],
+      calories: selectedItem[6],
+      quantity: quantity,
+      restaurant: restaurantNames[selectedItem[4][0]]
     }
 
-    return item[4].includes(activeCategory)
-  })
+    const exists = cartItems.find(item => item.id === newItem.id)
+
+    if (exists) {
+      setCartItems(cartItems.map(item =>
+        item.id === newItem.id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
+      ))
+    } else {
+      setCartItems([...cartItems, newItem])
+    }
+
+    setSelectedItem(null)
+    setQuantity(1)
+  }
 
   return (
     <div className="min-h-screen bg-white">
+      {!searchQuery && (
+        <section className="w-full">
+          <img src={banner} alt="CraftCrave Healthy Meals" className="block h-auto w-full" />
+        </section>
+      )}
 
-      <section className="w-full">
-        <img
-          src={banner}
-          alt="CraftCrave Healthy Meals"
-          className="block h-auto w-full"
+      {!searchQuery && (
+        <Categories
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
         />
-      </section>
+      )}
 
-      <Categories
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
-
-      <section
-        id="meals"
-        className="px-5 py-10 md:px-10 md:py-12"
-      >
+      <section id="meals" className="px-5 py-10 md:px-10 md:py-12">
         <div className="mb-8 text-center">
           <p className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-[#166534]">
             Fresh food, fitness first
           </p>
-
           <h2 className="text-3xl font-bold text-[#14532D]">
-            {activeCategory === ""
-              ? "Recommended for You"
-              : activeCategory}
+            {searchQuery
+              ? "Search Results"
+              : activeCategory === ""
+                ? "Recommended for You"
+                : activeCategory}
           </h2>
-
           <p className="mt-3 text-sm text-[#365C43]">
-            Delicious meals selected for you.
+            {searchQuery
+              ? `Results for "${searchQuery}"`
+              : activeCategory === ""
+                ? "12 delicious meals selected from all categories."
+                : "Delicious meals selected for you."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {filteredItems.map((item) => {
-            return (
-              <div
-                key={item[0]}
-                className="overflow-hidden rounded-xl border border-[#DCFCE7] bg-white shadow-md transition hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="relative">
-                  <img
-                    src={item[3]}
-                    alt={item[1]}
-                    className="h-48 w-full object-cover"
-                  />
-
-                  <span
-                    className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md ${
-                      item[5] === "veg"
-                        ? "bg-green-600"
-                        : "bg-red-600"
-                    }`}
-                  >
-                    {item[5] === "veg" ? "Veg" : "Non-Veg"}
-                  </span>
-                </div>
-
-                <div className="p-4">
-                  <h3 className="font-bold text-[#14532D]">
-                    {item[1]}
-                  </h3>
-
-                  <div className="mt-4 flex items-center justify-between">
-                    <p className="text-lg font-bold text-[#166534]">
-                      ₹{item[2]}
-                    </p>
-
-                    <button
-                      onClick={() => alert(item[1] + " added to cart!")}
-                      className="rounded-lg bg-[#166534] px-4 py-2 text-sm text-white transition hover:bg-[#14532D]"
-                    >
-                      Add to Cart
-                    </button>
-                  </div>
+          {filteredItems.map(item => (
+            <div key={item[0]} className="overflow-hidden rounded-xl border border-[#DCFCE7] bg-white shadow-md transition hover:-translate-y-1 hover:shadow-lg">
+              <div className="relative">
+                <img src={item[3]} alt={item[1]} className="h-48 w-full object-cover" />
+                <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white shadow-md ${item[5] === "veg" ? "bg-green-600" : "bg-red-600"}`}>
+                  {item[5] === "veg" ? "Veg" : "Non-Veg"}
+                </span>
+              </div>
+              <div className="p-4">
+                <h3 className="font-bold text-[#14532D]">{item[1]}</h3>
+                <div className="mt-4 flex items-center justify-between">
+                  <p className="text-lg font-bold text-[#166534]">₹{item[2]}</p>
+                  <button onClick={() => openDetails(item)} className="cursor-pointer rounded-lg bg-[#166534] px-4 py-2 text-sm text-white transition hover:bg-[#14532D]">
+                    View Details
+                  </button>
                 </div>
               </div>
-            )
-          })}
+            </div>
+          ))}
         </div>
+
+        {filteredItems.length === 0 && (
+          <p className="py-10 text-center text-lg font-semibold text-[#166534]">
+            No food items found.
+          </p>
+        )}
       </section>
 
+      {selectedItem && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
+          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bold text-green-800">Food Details</h2>
+              <button onClick={() => setSelectedItem(null)} className="cursor-pointer text-2xl font-bold text-red-600">
+                ×
+              </button>
+            </div>
+            <img src={selectedItem[3]} alt={selectedItem[1]} className="mt-4 h-48 w-full rounded-xl object-cover" />
+            <h3 className="mt-4 text-lg font-bold text-green-900">{selectedItem[1]}</h3>
+            <p className="mt-1 text-sm text-gray-600">
+              Restaurant: {restaurantNames[selectedItem[4][0]]}
+            </p>
+            <div className="mt-5 space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Price per serving</span>
+                <span className="font-semibold text-gray-800">₹{selectedItem[2]}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-600">Calories per serving</span>
+                <span className="font-semibold text-gray-800">{selectedItem[6]} kcal</span>
+              </div>
+            </div>
+            <div className="mt-6 flex items-center justify-between">
+              <p className="font-bold text-[#14532D]">Quantity</p>
+              <div className="flex items-center gap-3">
+                <button disabled={quantity === 1} onClick={() => setQuantity(quantity - 1)} className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] hover:bg-[#BBF7D0] disabled:cursor-not-allowed disabled:opacity-40">
+                  -
+                </button>
+                <span className="min-w-8 text-center text-lg font-bold text-[#14532D]">{quantity}</span>
+                <button onClick={() => setQuantity(quantity + 1)} className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] hover:bg-[#BBF7D0]">
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="mt-5 space-y-3 rounded-xl bg-green-50 p-4">
+              <div className="flex justify-between">
+                <span className="text-gray-700">Total Price</span>
+                <span className="font-bold text-green-800">₹{selectedItem[2] * quantity}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-700">Total Calories</span>
+                <span className="font-bold text-green-800">{selectedItem[6] * quantity} kcal</span>
+              </div>
+            </div>
+            <button onClick={addToCart} className="mt-5 w-full cursor-pointer rounded-lg bg-green-700 py-3 font-semibold text-white transition hover:bg-green-800">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      )}
       <Footer />
-
     </div>
   )
 }

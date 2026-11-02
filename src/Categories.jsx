@@ -28,7 +28,7 @@ function Categories({ activeCategory, onCategoryChange }) {
 
           <Link
             to="/meals"
-            className="font-semibold text-[#166534] transition hover:text-[#14532D]"
+            className="font-semibold text-[#166534] transition hover:text-[#14532D] cursor-pointer"
           >
             View All
           </Link>
@@ -46,7 +46,7 @@ function Categories({ activeCategory, onCategoryChange }) {
               <button
                 key={category}
                 onClick={() => onCategoryChange(category)}
-                className={`rounded-full border px-5 py-3 text-sm font-medium transition ${color}`}
+                className={`rounded-full border px-5 py-3 text-sm font-medium transition ${color} cursor-pointer`}
               >
                 {category}
               </button>
