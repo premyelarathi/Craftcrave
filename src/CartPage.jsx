@@ -12,6 +12,14 @@ function CartPage({ cartItems = [], setCartItems }) {
     (sum, item) => sum + item.quantity, 0
   )
 
+  function updateQuantity(id, amount) {
+    setCartItems(cartItems.map(item =>
+      item.id === id
+        ? { ...item, quantity: Math.max(1, item.quantity + amount) }
+        : item
+    ))
+  }
+
   function removeItem(id) {
     setCartItems(cartItems.filter(item => item.id !== id))
   }
@@ -61,7 +69,22 @@ function CartPage({ cartItems = [], setCartItems }) {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-semibold text-[#111827]">Serves:</span>
-                  <span>{item.quantity}</span>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => updateQuantity(item.id, -1)}
+                      disabled={item.quantity === 1}
+                      className="h-8 w-8 cursor-pointer rounded-md bg-[#DCFCE7] font-bold text-[#14532D] disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                      -
+                    </button>
+                    <span className="min-w-5 text-center font-semibold">{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(item.id, 1)}
+                      className="h-8 w-8 cursor-pointer rounded-md bg-[#DCFCE7] font-bold text-[#14532D]"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-semibold text-[#111827]">Calories:</span>
