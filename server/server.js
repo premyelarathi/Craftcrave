@@ -1,3 +1,4 @@
+
 const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
@@ -103,7 +104,7 @@ app.post("/api/orders", async (req, res) => {
   }
 })
 
-// Get Logged-in User Orders
+// Get Customer Orders
 app.get("/api/orders", async (req, res) => {
   try {
     const email = req.query.email?.toLowerCase().trim()
@@ -116,6 +117,19 @@ app.get("/api/orders", async (req, res) => {
       customerEmail: email
     }).sort({ createdAt: -1 })
 
+    res.status(200).json(orders)
+  } catch (error) {
+    res.status(500).json({
+      message: "Unable to Fetch Orders",
+      error: error.message
+    })
+  }
+})
+
+// Get All Orders for Admin
+app.get("/api/admin/orders", async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 })
     res.status(200).json(orders)
   } catch (error) {
     res.status(500).json({

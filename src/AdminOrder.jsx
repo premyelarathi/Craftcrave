@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom"
 
 function AdminOrders() {
   const navigate = useNavigate()
-
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -19,10 +18,13 @@ function AdminOrders() {
     "Delivered"
   ]
 
-  // Fetch Orders
+  // Fetch All Orders
   const getOrders = useCallback(async () => {
     try {
-      const response = await fetch("https://craftcrave.onrender.com/api/orders")
+      setLoading(true)
+      setError("")
+
+      const response = await fetch("https://craftcrave.onrender.com/api/admin/orders")
 
       if (!response.ok) {
         throw new Error("Unable to fetch orders")
@@ -137,19 +139,16 @@ function AdminOrders() {
 
         {/* Header */}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-
           <div>
             <h1 className="text-3xl font-bold text-green-950">
               Admin Dashboard
             </h1>
-
             <p className="mt-1 text-gray-600">
               CraftCrave Order Management
             </p>
           </div>
 
           <div className="flex gap-3">
-
             <Link
               to="/"
               className="rounded-lg bg-green-700 px-5 py-2 font-semibold text-white hover:bg-green-800 cursor-pointer"
@@ -163,13 +162,11 @@ function AdminOrders() {
             >
               Logout
             </button>
-
           </div>
         </div>
 
         {/* Dashboard Cards */}
         <div className="mb-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-
           <div className="rounded-xl bg-white p-6 shadow">
             <p className="text-gray-500">Total Orders</p>
             <h2 className="mt-2 text-3xl font-bold text-green-900">
@@ -197,12 +194,10 @@ function AdminOrders() {
               {deliveredOrders}
             </h2>
           </div>
-
         </div>
 
         {/* Orders Section */}
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-
           <h2 className="text-2xl font-bold text-green-950">
             Customer Orders
           </h2>
@@ -219,23 +214,17 @@ function AdminOrders() {
                 {status}
               </option>
             ))}
-
           </select>
         </div>
 
         {/* Orders List */}
         {filteredOrders.length === 0 ? (
-
           <p className="rounded-xl bg-white p-10 text-center text-gray-600 shadow">
             No Orders Found
           </p>
-
         ) : (
-
           <div className="space-y-6">
-
             {filteredOrders.map((order) => (
-
               <div
                 key={order._id}
                 className="rounded-xl border border-green-200 bg-white p-6 shadow-md"
@@ -243,7 +232,6 @@ function AdminOrders() {
 
                 {/* Customer and Status */}
                 <div className="mb-5 flex flex-wrap items-center justify-between gap-4">
-
                   <div>
                     <h3 className="text-xl font-bold text-green-950">
                       {order.customerName}
@@ -277,12 +265,10 @@ function AdminOrders() {
                       ))}
                     </select>
                   </div>
-
                 </div>
 
                 {/* Customer Details */}
                 <div className="grid gap-3 text-gray-700 sm:grid-cols-2">
-
                   <p>
                     <strong>Phone:</strong> {order.phone}
                   </p>
@@ -307,7 +293,6 @@ function AdminOrders() {
                     <strong>Order Date:</strong>{" "}
                     {new Date(order.createdAt).toLocaleString()}
                   </p>
-
                 </div>
 
                 <hr className="my-5 border-green-200" />
@@ -318,14 +303,11 @@ function AdminOrders() {
                 </h3>
 
                 <div className="space-y-3">
-
                   {order.items.map((item, index) => (
-
                     <div
                       key={index}
                       className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-green-50 p-4"
                     >
-
                       <div>
                         <p className="font-bold text-green-900">
                           {item.name}
@@ -347,16 +329,12 @@ function AdminOrders() {
                       <p className="font-bold text-green-800">
                         ₹{item.price * item.quantity}
                       </p>
-
                     </div>
-
                   ))}
-
                 </div>
 
                 {/* Total and Tracking */}
                 <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-green-200 pt-4">
-
                   <Link
                     to={`/track-order/${order._id}`}
                     className="rounded-lg bg-green-800 px-5 py-2 font-semibold text-white hover:bg-green-900 cursor-pointer"
@@ -367,17 +345,12 @@ function AdminOrders() {
                   <p className="text-xl font-bold text-green-950">
                     Total: ₹{order.totalPrice}
                   </p>
-
                 </div>
 
               </div>
-
             ))}
-
           </div>
-
         )}
-
       </div>
     </div>
   )
