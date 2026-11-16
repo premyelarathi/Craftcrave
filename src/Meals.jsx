@@ -150,8 +150,9 @@ export const nutritionInfo = {
 
 export const customizationOptions = [
   { id: "onion", name: "Onion", icon: "🧅", price: 15, calories: 10, protein: 0, carbs: 2, fat: 0, fiber: 1 },
-  { id: "paneer", name: "Extra Paneer", icon: "🧊", price: 30, calories: 100, protein: 8, carbs: 2, fat: 7, fiber: 0 },
-  { id: "chicken", name: "Extra Chicken", icon: "🍗", price: 40, calories: 120, protein: 20, carbs: 0, fat: 4, fiber: 0 }
+  { id: "chilli", name: "Green Chilli", icon: "🌶️", price: 10, calories: 2, protein: 0, carbs: 0, fat: 0, fiber: 0 },
+  { id: "sauce", name: "Extra Sauce", icon: "🥫", price: 20, calories: 15, protein: 0, carbs: 3, fat: 0, fiber: 0 },
+  { id: "coriander", name: "Coriander", icon: "🌿", price: 10, calories: 1, protein: 0, carbs: 0, fat: 0, fiber: 0 }
 ]
 
 const restaurantNames = {
@@ -163,15 +164,12 @@ const restaurantNames = {
   "Smoothies & Drinks": "Fresh Sip"
 }
 
-function Meals({ cartItems, setCartItems }) {
+function Meals({ cartItems = [], setCartItems }) {
   const [selected, setSelected] = useState(null)
   const [qty, setQty] = useState(1)
   const [selectedAddons, setSelectedAddons] = useState([])
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get("search")?.toLowerCase().trim() || ""
-
-  const paneerItems = [4, 11, 22, 29, 34]
-  const chickenItems = [6, 12, 16, 18, 21, 31, 32]
 
   const dishes = foodItems.map(item => ({
     id: item[0],
@@ -191,17 +189,16 @@ function Meals({ cartItems, setCartItems }) {
     dish.category.some(category => category.toLowerCase().includes(searchQuery))
   )
 
-  const availableCustomizations = selected
-    ? customizationOptions.filter(addon =>
-        addon.id === "onion" ||
-        (addon.id === "paneer" && paneerItems.includes(selected.id)) ||
-        (addon.id === "chicken" && chickenItems.includes(selected.id))
-      )
-    : []
-
+  const availableCustomizations = customizationOptions
   const addons = customizationOptions.filter(addon => selectedAddons.includes(addon.id))
-  const addonPrice = addons.reduce((total, addon) => total + addon.price, 0)
-  const addonCalories = addons.reduce((total, addon) => total + addon.calories, 0)
+
+  const addonPrice = addons.reduce(
+    (total, addon) => total + (Number(addon.price) || 0), 0
+  )
+
+  const addonCalories = addons.reduce(
+    (total, addon) => total + (Number(addon.calories) || 0), 0
+  )
 
   const totalNutrition = selected ? {
     protein: selected.nutrition.protein + addons.reduce((total, addon) => total + addon.protein, 0),
@@ -228,23 +225,25 @@ function Meals({ cartItems, setCartItems }) {
     const item = {
       id: selected.id,
       name: selected.name,
-      price: selected.price + addonPrice,
-      basePrice: selected.price,
+      price: Number(selected.price) || 0,
       image: selected.image,
       calories: selected.calories + addonCalories,
       quantity: qty,
       restaurant: selected.restaurant,
-      customizations: addons.map(addon => addon.name)
+      customizations: addons.map(addon => ({
+        name: addon.name,
+        price: Number(addon.price) || 0
+      }))
     }
 
     const exists = cartItems.find(x =>
-      x.id === selected.id &&
+      x.id === item.id &&
       JSON.stringify(x.customizations || []) === JSON.stringify(item.customizations)
     )
 
     if (exists) {
       setCartItems(cartItems.map(x =>
-        x.id === selected.id &&
+        x.id === item.id &&
         JSON.stringify(x.customizations || []) === JSON.stringify(item.customizations)
           ? { ...x, quantity: x.quantity + qty }
           : x
@@ -357,7 +356,7 @@ function Meals({ cartItems, setCartItems }) {
               <p className="mb-3 mt-1 text-xs text-gray-500">
                 Add extra ingredients to your meal.
               </p>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {availableCustomizations.map(addon => (
                   <button key={addon.id} onClick={() => toggleAddon(addon.id)} className={`cursor-pointer rounded-xl border p-3 text-center transition ${selectedAddons.includes(addon.id) ? "border-green-600 bg-green-50 ring-2 ring-green-200" : "border-gray-200 bg-white hover:border-green-400"}`}>
                     <span className="block text-3xl">{addon.icon}</span>
@@ -385,6 +384,16 @@ function Meals({ cartItems, setCartItems }) {
             </div>
 
             <div className="mt-5 space-y-3 rounded-xl bg-green-50 p-4 font-semibold text-[#166534]">
+              <p className="flex justify-between">
+                <span>Food Price</span>
+                <span>₹{selected.price}</span>
+              </p>
+              {addons.map(addon => (
+                <p key={addon.id} className="flex justify-between">
+                  <span>{addon.name}</span>
+                  <span>+ ₹{addon.price}</span>
+                </p>
+              ))}
               <p className="flex justify-between">
                 <span>Price per serving</span>
                 <span>₹{selected.price + addonPrice}</span>

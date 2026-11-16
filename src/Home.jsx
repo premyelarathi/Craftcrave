@@ -71,8 +71,14 @@ function Home({ cartItems, setCartItems }) {
     : []
 
   const addons = customizationOptions.filter(addon => selectedAddons.includes(addon.id))
-  const addonPrice = addons.reduce((total, addon) => total + addon.price, 0)
-  const addonCalories = addons.reduce((total, addon) => total + addon.calories, 0)
+
+  const addonPrice = addons.reduce(
+    (total, addon) => total + (Number(addon.price) || 0), 0
+  )
+
+  const addonCalories = addons.reduce(
+    (total, addon) => total + (Number(addon.calories) || 0), 0
+  )
 
   const totalNutrition = selectedItem ? {
     protein: nutritionInfo[selectedItem[0]].protein + addons.reduce((total, addon) => total + addon.protein, 0),
@@ -99,13 +105,15 @@ function Home({ cartItems, setCartItems }) {
     const newItem = {
       id: selectedItem[0],
       name: selectedItem[1],
-      price: selectedItem[2] + addonPrice,
-      basePrice: selectedItem[2],
+      price: Number(selectedItem[2]) || 0,
       image: selectedItem[3],
       calories: selectedItem[6] + addonCalories,
       quantity: quantity,
       restaurant: restaurantNames[selectedItem[4][0]],
-      customizations: addons.map(addon => addon.name)
+      customizations: addons.map(addon => ({
+        name: addon.name,
+        price: Number(addon.price) || 0
+      }))
     }
 
     const exists = cartItems.find(item =>
@@ -274,6 +282,16 @@ function Home({ cartItems, setCartItems }) {
             </div>
 
             <div className="mt-5 space-y-3 rounded-xl bg-green-50 p-4">
+              <div className="flex justify-between">
+                <span className="text-gray-700">Food Price</span>
+                <span className="font-bold text-green-800">₹{selectedItem[2]}</span>
+              </div>
+              {addons.map(addon => (
+                <div key={addon.id} className="flex justify-between">
+                  <span className="text-gray-700">{addon.name}</span>
+                  <span className="font-bold text-green-800">+ ₹{addon.price}</span>
+                </div>
+              ))}
               <div className="flex justify-between">
                 <span className="text-gray-700">Price per serving</span>
                 <span className="font-bold text-green-800">₹{selectedItem[2] + addonPrice}</span>
