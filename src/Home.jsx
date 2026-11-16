@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react"
 import { useLocation, useSearchParams } from "react-router-dom"
-import { foodItems } from "./Meals"
+import { foodItems, nutritionInfo, customizationOptions } from "./Meals"
 import banner from "./assets/Images/banner.jpeg"
 import Categories from "./Categories"
 import Footer from "./Footer"
@@ -10,6 +10,7 @@ function Home({ cartItems, setCartItems }) {
   const [activeCategory, setActiveCategory] = useState("")
   const [selectedItem, setSelectedItem] = useState(null)
   const [quantity, setQuantity] = useState(1)
+  const [selectedAddons, setSelectedAddons] = useState([])
   const location = useLocation()
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get("search")?.toLowerCase().trim() || ""
@@ -22,6 +23,9 @@ function Home({ cartItems, setCartItems }) {
     "Breakfast": "Morning Kitchen",
     "Smoothies & Drinks": "Fresh Sip"
   }
+
+  const paneerItems = [4, 11, 22, 29, 34]
+  const chickenItems = [6, 12, 16, 18, 21, 31, 32]
 
   useEffect(() => {
     if (location.state && location.state.category) {
@@ -58,27 +62,61 @@ function Home({ cartItems, setCartItems }) {
     return matchesCategory && matchesSearch
   })
 
+  const availableCustomizations = selectedItem
+    ? customizationOptions.filter(addon =>
+        addon.id === "onion" ||
+        (addon.id === "paneer" && paneerItems.includes(selectedItem[0])) ||
+        (addon.id === "chicken" && chickenItems.includes(selectedItem[0]))
+      )
+    : []
+
+  const addons = customizationOptions.filter(addon => selectedAddons.includes(addon.id))
+  const addonPrice = addons.reduce((total, addon) => total + addon.price, 0)
+  const addonCalories = addons.reduce((total, addon) => total + addon.calories, 0)
+
+  const totalNutrition = selectedItem ? {
+    protein: nutritionInfo[selectedItem[0]].protein + addons.reduce((total, addon) => total + addon.protein, 0),
+    carbs: nutritionInfo[selectedItem[0]].carbs + addons.reduce((total, addon) => total + addon.carbs, 0),
+    fat: nutritionInfo[selectedItem[0]].fat + addons.reduce((total, addon) => total + addon.fat, 0),
+    fiber: nutritionInfo[selectedItem[0]].fiber + addons.reduce((total, addon) => total + addon.fiber, 0)
+  } : null
+
   function openDetails(item) {
     setSelectedItem(item)
     setQuantity(1)
+    setSelectedAddons([])
+  }
+
+  function toggleAddon(id) {
+    if (selectedAddons.includes(id)) {
+      setSelectedAddons(selectedAddons.filter(item => item !== id))
+    } else {
+      setSelectedAddons([...selectedAddons, id])
+    }
   }
 
   function addToCart() {
     const newItem = {
       id: selectedItem[0],
       name: selectedItem[1],
-      price: selectedItem[2],
+      price: selectedItem[2] + addonPrice,
+      basePrice: selectedItem[2],
       image: selectedItem[3],
-      calories: selectedItem[6],
+      calories: selectedItem[6] + addonCalories,
       quantity: quantity,
-      restaurant: restaurantNames[selectedItem[4][0]]
+      restaurant: restaurantNames[selectedItem[4][0]],
+      customizations: addons.map(addon => addon.name)
     }
 
-    const exists = cartItems.find(item => item.id === newItem.id)
+    const exists = cartItems.find(item =>
+      item.id === newItem.id &&
+      JSON.stringify(item.customizations || []) === JSON.stringify(newItem.customizations)
+    )
 
     if (exists) {
       setCartItems(cartItems.map(item =>
-        item.id === newItem.id
+        item.id === newItem.id &&
+        JSON.stringify(item.customizations || []) === JSON.stringify(newItem.customizations)
           ? { ...item, quantity: item.quantity + quantity }
           : item
       ))
@@ -88,6 +126,7 @@ function Home({ cartItems, setCartItems }) {
 
     setSelectedItem(null)
     setQuantity(1)
+    setSelectedAddons([])
   }
 
   return (
@@ -157,50 +196,114 @@ function Home({ cartItems, setCartItems }) {
 
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
-          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+          <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-bold text-green-800">Food Details</h2>
               <button onClick={() => setSelectedItem(null)} className="cursor-pointer text-2xl font-bold text-red-600">
                 ×
               </button>
             </div>
+
             <img src={selectedItem[3]} alt={selectedItem[1]} className="mt-4 h-48 w-full rounded-xl object-cover" />
             <h3 className="mt-4 text-lg font-bold text-green-900">{selectedItem[1]}</h3>
             <p className="mt-1 text-sm text-gray-600">
               Restaurant: {restaurantNames[selectedItem[4][0]]}
             </p>
-            <div className="mt-5 space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Price per serving</span>
-                <span className="font-semibold text-gray-800">₹{selectedItem[2]}</span>
+
+            <div className="mt-5 rounded-xl bg-green-50 p-4">
+              <h3 className="mb-3 font-bold text-[#14532D]">
+                Nutrition Information <span className="text-xs font-normal text-gray-500">(Approx. per serving)</span>
+              </h3>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+                {[
+                  ["🔥", "Calories", `${selectedItem[6] + addonCalories} kcal`],
+                  ["💪", "Protein", `${totalNutrition.protein} g`],
+                  ["🌾", "Carbs", `${totalNutrition.carbs} g`],
+                  ["🥑", "Fat", `${totalNutrition.fat} g`],
+                  ["🍃", "Fiber", `${totalNutrition.fiber} g`]
+                ].map(([icon, label, value]) => (
+                  <div key={label} className="rounded-lg bg-white p-2 text-center">
+                    <p className="text-xl">{icon}</p>
+                    <p className="text-xs text-gray-600">{label}</p>
+                    <p className="mt-1 text-sm font-bold text-[#14532D]">{value}</p>
+                  </div>
+                ))}
               </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Calories per serving</span>
-                <span className="font-semibold text-gray-800">{selectedItem[6]} kcal</span>
+              <p className="mt-3 text-xs text-gray-500">
+                Nutrition values are estimates and may vary by preparation.
+              </p>
+            </div>
+
+            <div className="mt-4">
+              <h3 className="font-bold text-[#14532D]">Ingredients</h3>
+              <p className="mt-1 text-sm leading-6 text-gray-600">
+                {nutritionInfo[selectedItem[0]].ingredients}
+              </p>
+            </div>
+
+            <div className="mt-5">
+              <h3 className="font-bold text-[#14532D]">Customizations</h3>
+              <p className="mb-3 mt-1 text-xs text-gray-500">
+                Add extra ingredients to your meal.
+              </p>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {availableCustomizations.map(addon => (
+                  <button key={addon.id} onClick={() => toggleAddon(addon.id)} className={`cursor-pointer rounded-xl border p-3 text-center transition ${selectedAddons.includes(addon.id) ? "border-green-600 bg-green-50 ring-2 ring-green-200" : "border-gray-200 bg-white hover:border-green-400"}`}>
+                    <span className="block text-3xl">{addon.icon}</span>
+                    <span className="mt-2 block text-sm font-semibold text-[#14532D]">{addon.name}</span>
+                    <span className="mt-1 block text-sm font-bold text-green-700">+₹{addon.price}</span>
+                    <span className="mt-2 block text-xs text-gray-500">
+                      {selectedAddons.includes(addon.id) ? "✓ Added" : "Add +"}
+                    </span>
+                  </button>
+                ))}
               </div>
             </div>
+
             <div className="mt-6 flex items-center justify-between">
               <p className="font-bold text-[#14532D]">Quantity</p>
               <div className="flex items-center gap-3">
-                <button disabled={quantity === 1} onClick={() => setQuantity(quantity - 1)} className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] hover:bg-[#BBF7D0] disabled:cursor-not-allowed disabled:opacity-40">
+                <button disabled={quantity === 1} onClick={() => setQuantity(quantity - 1)} className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] disabled:opacity-40">
                   -
                 </button>
                 <span className="min-w-8 text-center text-lg font-bold text-[#14532D]">{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)} className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] hover:bg-[#BBF7D0]">
+                <button onClick={() => setQuantity(quantity + 1)} className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D]">
                   +
                 </button>
               </div>
             </div>
+
             <div className="mt-5 space-y-3 rounded-xl bg-green-50 p-4">
               <div className="flex justify-between">
+                <span className="text-gray-700">Price per serving</span>
+                <span className="font-bold text-green-800">₹{selectedItem[2] + addonPrice}</span>
+              </div>
+              <div className="flex justify-between">
                 <span className="text-gray-700">Total Price</span>
-                <span className="font-bold text-green-800">₹{selectedItem[2] * quantity}</span>
+                <span className="font-bold text-green-800">₹{(selectedItem[2] + addonPrice) * quantity}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-700">Total Calories</span>
-                <span className="font-bold text-green-800">{selectedItem[6] * quantity} kcal</span>
+                <span className="font-bold text-green-800">{(selectedItem[6] + addonCalories) * quantity} kcal</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-700">Total Protein</span>
+                <span className="font-bold text-green-800">{totalNutrition.protein * quantity} g</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-700">Total Carbs</span>
+                <span className="font-bold text-green-800">{totalNutrition.carbs * quantity} g</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-700">Total Fat</span>
+                <span className="font-bold text-green-800">{totalNutrition.fat * quantity} g</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-700">Total Fiber</span>
+                <span className="font-bold text-green-800">{totalNutrition.fiber * quantity} g</span>
               </div>
             </div>
+
             <button onClick={addToCart} className="mt-5 w-full cursor-pointer rounded-lg bg-green-700 py-3 font-semibold text-white transition hover:bg-green-800">
               Add to Cart
             </button>

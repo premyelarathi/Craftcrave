@@ -99,6 +99,61 @@ export const foodItems = [
   [54, "Dates and Milk Smoothie", 119, Datesmil, ["Smoothies & Drinks"], "veg", 300]
 ]
 
+export const nutritionInfo = {
+  1: { protein: 28, carbs: 52, fat: 12, fiber: 5, ingredients: "Egg, Rice, Vegetables, Pepper, Spices" },
+  2: { protein: 11, carbs: 62, fat: 8, fiber: 7, ingredients: "Rice, Dal, Carrot, Beans, Spices" },
+  3: { protein: 24, carbs: 48, fat: 10, fiber: 12, ingredients: "Chickpeas, Rice, Onion, Tomato, Herbs" },
+  4: { protein: 32, carbs: 48, fat: 12, fiber: 8, ingredients: "Paneer, Brown Rice, Broccoli, Bell Peppers, Spices" },
+  6: { protein: 42, carbs: 48, fat: 12, fiber: 7, ingredients: "Chicken Breast, Brown Rice, Broccoli, Herbs, Spices" },
+  7: { protein: 12, carbs: 42, fat: 12, fiber: 5, ingredients: "Banana, Milk, Peanut Butter, Honey" },
+  8: { protein: 13, carbs: 48, fat: 9, fiber: 7, ingredients: "Oats, Onion, Carrot, Peas, Spices" },
+  9: { protein: 34, carbs: 38, fat: 10, fiber: 9, ingredients: "Soya Chunks, Rice, Onion, Tomato, Spices" },
+  10: { protein: 9, carbs: 75, fat: 16, fiber: 5, ingredients: "Cauliflower, Rice, Onion, Capsicum, Sauce" },
+  11: { protein: 18, carbs: 25, fat: 17, fiber: 7, ingredients: "Paneer, Lettuce, Cucumber, Tomato, Herbs" },
+  12: { protein: 28, carbs: 20, fat: 12, fiber: 6, ingredients: "Chicken, Lettuce, Cucumber, Tomato, Dressing" },
+  13: { protein: 17, carbs: 48, fat: 12, fiber: 7, ingredients: "Egg, Sweet Potato, Onion, Pepper, Herbs" },
+  14: { protein: 11, carbs: 58, fat: 10, fiber: 7, ingredients: "Banana, Oats, Milk, Cocoa Powder" },
+  16: { protein: 36, carbs: 50, fat: 15, fiber: 4, ingredients: "Chicken Keema, Rice, Onion, Tomato, Spices" },
+  17: { protein: 22, carbs: 42, fat: 8, fiber: 13, ingredients: "Mixed Sprouts, Onion, Tomato, Lemon, Herbs" },
+  18: { protein: 38, carbs: 35, fat: 14, fiber: 4, ingredients: "Chicken, Pepper, Onion, Curry Leaves, Spices" },
+  19: { protein: 7, carbs: 68, fat: 10, fiber: 3, ingredients: "Rice, Tomato, Onion, Curry Leaves, Spices" },
+  20: { protein: 6, carbs: 65, fat: 9, fiber: 2, ingredients: "Rice, Lemon, Peanuts, Curry Leaves, Spices" },
+  21: { protein: 24, carbs: 52, fat: 13, fiber: 5, ingredients: "Chapathi, Chicken, Onion, Tomato, Spices" },
+  22: { protein: 18, carbs: 48, fat: 14, fiber: 5, ingredients: "Chapathi, Paneer, Onion, Tomato, Spices" },
+  23: { protein: 8, carbs: 52, fat: 8, fiber: 1, ingredients: "Rice, Curd, Milk, Coriander" },
+  24: { protein: 9, carbs: 65, fat: 10, fiber: 5, ingredients: "Rice, Carrot, Beans, Peas, Spices" },
+  26: { protein: 10, carbs: 58, fat: 7, fiber: 6, ingredients: "Rice, Toor Dal, Vegetables, Tamarind, Spices" },
+  28: { protein: 10, carbs: 65, fat: 13, fiber: 5, ingredients: "Rice, Mushroom, Onion, Mint, Spices" },
+  29: { protein: 18, carbs: 65, fat: 18, fiber: 4, ingredients: "Rice, Paneer, Onion, Tomato, Mint, Spices" },
+  30: { protein: 22, carbs: 62, fat: 13, fiber: 8, ingredients: "Rice, Soya Chunks, Onion, Mint, Spices" },
+  31: { protein: 25, carbs: 75, fat: 22, fiber: 4, ingredients: "Chicken, Basmati Rice, Onion, Tomato, Spices" },
+  32: { protein: 24, carbs: 72, fat: 20, fiber: 4, ingredients: "Chicken, Basmati Rice, Onion, Mint, Spices" },
+  34: { protein: 17, carbs: 20, fat: 15, fiber: 6, ingredients: "Paneer, Lettuce, Tomato, Cucumber, Tikka Spices" },
+  35: { protein: 12, carbs: 24, fat: 17, fiber: 8, ingredients: "Peanuts, Cucumber, Carrot, Tomato, Lettuce" },
+  36: { protein: 14, carbs: 32, fat: 7, fiber: 10, ingredients: "Mixed Sprouts, Onion, Tomato, Lemon, Coriander" },
+  37: { protein: 15, carbs: 38, fat: 8, fiber: 11, ingredients: "Chickpeas, Cucumber, Tomato, Onion, Lemon" },
+  38: { protein: 7, carbs: 28, fat: 6, fiber: 5, ingredients: "Cucumber, Sweet Corn, Carrot, Lemon, Herbs" },
+  39: { protein: 18, carbs: 18, fat: 12, fiber: 4, ingredients: "Boiled Egg, Lettuce, Cucumber, Tomato, Pepper" },
+  40: { protein: 8, carbs: 48, fat: 13, fiber: 4, ingredients: "Dosa Batter, Potato, Onion, Spices, Chutney" },
+  41: { protein: 7, carbs: 42, fat: 6, fiber: 6, ingredients: "Ragi Flour, Rice Batter, Onion, Spices" },
+  43: { protein: 7, carbs: 42, fat: 9, fiber: 5, ingredients: "Rava, Carrot, Beans, Onion, Curry Leaves" },
+  44: { protein: 6, carbs: 52, fat: 8, fiber: 4, ingredients: "Poha, Onion, Peas, Peanuts, Curry Leaves" },
+  45: { protein: 7, carbs: 48, fat: 9, fiber: 3, ingredients: "Dosa Batter, Coconut Chutney, Spices" },
+  46: { protein: 9, carbs: 52, fat: 4, fiber: 5, ingredients: "Idli Batter, Sambar, Toor Dal, Vegetables" },
+  47: { protein: 6, carbs: 42, fat: 4, fiber: 3, ingredients: "Mango, Milk, Honey" },
+  48: { protein: 8, carbs: 38, fat: 9, fiber: 1, ingredients: "Strawberry, Milk, Sugar" },
+  49: { protein: 6, carbs: 40, fat: 4, fiber: 4, ingredients: "Apple, Milk, Cinnamon, Honey" },
+  50: { protein: 10, carbs: 48, fat: 14, fiber: 4, ingredients: "Milk, Almonds, Cashews, Dates" },
+  52: { protein: 4, carbs: 6, fat: 3, fiber: 0, ingredients: "Curd, Water, Ginger, Curry Leaves, Salt" },
+  54: { protein: 9, carbs: 48, fat: 5, fiber: 4, ingredients: "Dates, Milk, Almonds" }
+}
+
+export const customizationOptions = [
+  { id: "onion", name: "Onion", icon: "🧅", price: 15, calories: 10, protein: 0, carbs: 2, fat: 0, fiber: 1 },
+  { id: "paneer", name: "Extra Paneer", icon: "🧊", price: 30, calories: 100, protein: 8, carbs: 2, fat: 7, fiber: 0 },
+  { id: "chicken", name: "Extra Chicken", icon: "🍗", price: 40, calories: 120, protein: 20, carbs: 0, fat: 4, fiber: 0 }
+]
+
 const restaurantNames = {
   "Protein-Rich": "Fit Kitchen",
   "Everyday": "Daily Meals",
@@ -111,8 +166,12 @@ const restaurantNames = {
 function Meals({ cartItems, setCartItems }) {
   const [selected, setSelected] = useState(null)
   const [qty, setQty] = useState(1)
+  const [selectedAddons, setSelectedAddons] = useState([])
   const [searchParams] = useSearchParams()
   const searchQuery = searchParams.get("search")?.toLowerCase().trim() || ""
+
+  const paneerItems = [4, 11, 22, 29, 34]
+  const chickenItems = [6, 12, 16, 18, 21, 31, 32]
 
   const dishes = foodItems.map(item => ({
     id: item[0],
@@ -122,6 +181,7 @@ function Meals({ cartItems, setCartItems }) {
     category: item[4],
     type: item[5],
     calories: item[6],
+    nutrition: nutritionInfo[item[0]],
     restaurant: restaurantNames[item[4][0]]
   }))
 
@@ -131,22 +191,61 @@ function Meals({ cartItems, setCartItems }) {
     dish.category.some(category => category.toLowerCase().includes(searchQuery))
   )
 
+  const availableCustomizations = selected
+    ? customizationOptions.filter(addon =>
+        addon.id === "onion" ||
+        (addon.id === "paneer" && paneerItems.includes(selected.id)) ||
+        (addon.id === "chicken" && chickenItems.includes(selected.id))
+      )
+    : []
+
+  const addons = customizationOptions.filter(addon => selectedAddons.includes(addon.id))
+  const addonPrice = addons.reduce((total, addon) => total + addon.price, 0)
+  const addonCalories = addons.reduce((total, addon) => total + addon.calories, 0)
+
+  const totalNutrition = selected ? {
+    protein: selected.nutrition.protein + addons.reduce((total, addon) => total + addon.protein, 0),
+    carbs: selected.nutrition.carbs + addons.reduce((total, addon) => total + addon.carbs, 0),
+    fat: selected.nutrition.fat + addons.reduce((total, addon) => total + addon.fat, 0),
+    fiber: selected.nutrition.fiber + addons.reduce((total, addon) => total + addon.fiber, 0)
+  } : null
+
+  function openDetails(dish) {
+    setSelected(dish)
+    setQty(1)
+    setSelectedAddons([])
+  }
+
+  function toggleAddon(id) {
+    if (selectedAddons.includes(id)) {
+      setSelectedAddons(selectedAddons.filter(item => item !== id))
+    } else {
+      setSelectedAddons([...selectedAddons, id])
+    }
+  }
+
   function addToCart() {
     const item = {
       id: selected.id,
       name: selected.name,
-      price: selected.price,
+      price: selected.price + addonPrice,
+      basePrice: selected.price,
       image: selected.image,
-      calories: selected.calories,
+      calories: selected.calories + addonCalories,
       quantity: qty,
-      restaurant: selected.restaurant
+      restaurant: selected.restaurant,
+      customizations: addons.map(addon => addon.name)
     }
 
-    const exists = cartItems.find(x => x.id === selected.id)
+    const exists = cartItems.find(x =>
+      x.id === selected.id &&
+      JSON.stringify(x.customizations || []) === JSON.stringify(item.customizations)
+    )
 
     if (exists) {
       setCartItems(cartItems.map(x =>
-        x.id === selected.id
+        x.id === selected.id &&
+        JSON.stringify(x.customizations || []) === JSON.stringify(item.customizations)
           ? { ...x, quantity: x.quantity + qty }
           : x
       ))
@@ -156,6 +255,7 @@ function Meals({ cartItems, setCartItems }) {
 
     setSelected(null)
     setQty(1)
+    setSelectedAddons([])
   }
 
   return (
@@ -171,7 +271,6 @@ function Meals({ cartItems, setCartItems }) {
           <p className="mt-3 text-[#365C43]">
             Discover delicious meals made for your healthy lifestyle.
           </p>
-
           {searchQuery && (
             <p className="mt-3 text-sm font-semibold text-[#166534]">
               Search results for: {searchQuery}
@@ -196,7 +295,7 @@ function Meals({ cartItems, setCartItems }) {
 
                 <div className="mt-4 flex items-center justify-between border-t border-[#DCFCE7] pt-4">
                   <p className="text-xl font-bold text-[#166534]">₹{dish.price}</p>
-                  <button onClick={() => { setSelected(dish); setQty(1) }} className="cursor-pointer rounded-lg bg-[#166534] px-4 py-2 text-sm font-semibold text-white hover:bg-[#14532D]">
+                  <button onClick={() => openDetails(dish)} className="cursor-pointer rounded-lg bg-[#166534] px-4 py-2 text-sm font-semibold text-white hover:bg-[#14532D]">
                     View Details
                   </button>
                 </div>
@@ -214,7 +313,7 @@ function Meals({ cartItems, setCartItems }) {
 
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/60 p-4">
-          <div className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
+          <div className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl">
             <button onClick={() => setSelected(null)} className="absolute right-4 top-3 cursor-pointer text-2xl font-bold text-red-600">
               ×
             </button>
@@ -223,20 +322,63 @@ function Meals({ cartItems, setCartItems }) {
 
             <h2 className="mt-4 text-2xl font-bold text-[#14532D]">{selected.name}</h2>
             <p className="mt-2 text-sm text-gray-600">Restaurant: {selected.restaurant}</p>
-            <p className="mt-2 text-sm text-gray-600">Calories per serving: {selected.calories} kcal</p>
-            <p className="mt-2 text-sm text-gray-600">Price per serving: ₹{selected.price}</p>
+
+            <div className="mt-5 rounded-xl bg-green-50 p-4">
+              <h3 className="mb-3 font-bold text-[#14532D]">
+                Nutrition Information <span className="text-xs font-normal text-gray-500">(Approx. per serving)</span>
+              </h3>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+                {[
+                  ["🔥", "Calories", `${selected.calories + addonCalories} kcal`],
+                  ["💪", "Protein", `${totalNutrition.protein} g`],
+                  ["🌾", "Carbs", `${totalNutrition.carbs} g`],
+                  ["🥑", "Fat", `${totalNutrition.fat} g`],
+                  ["🍃", "Fiber", `${totalNutrition.fiber} g`]
+                ].map(([icon, label, value]) => (
+                  <div key={label} className="rounded-lg bg-white p-2 text-center">
+                    <p className="text-xl">{icon}</p>
+                    <p className="text-xs text-gray-600">{label}</p>
+                    <p className="mt-1 text-sm font-bold text-[#14532D]">{value}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-gray-500">
+                Nutrition values are estimates and may vary by preparation.
+              </p>
+            </div>
+
+            <div className="mt-4">
+              <h3 className="font-bold text-[#14532D]">Ingredients</h3>
+              <p className="mt-1 text-sm text-gray-600">{selected.nutrition.ingredients}</p>
+            </div>
+
+            <div className="mt-5">
+              <h3 className="font-bold text-[#14532D]">Customizations</h3>
+              <p className="mb-3 mt-1 text-xs text-gray-500">
+                Add extra ingredients to your meal.
+              </p>
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {availableCustomizations.map(addon => (
+                  <button key={addon.id} onClick={() => toggleAddon(addon.id)} className={`cursor-pointer rounded-xl border p-3 text-center transition ${selectedAddons.includes(addon.id) ? "border-green-600 bg-green-50 ring-2 ring-green-200" : "border-gray-200 bg-white hover:border-green-400"}`}>
+                    <span className="block text-3xl">{addon.icon}</span>
+                    <span className="mt-2 block text-sm font-semibold text-[#14532D]">{addon.name}</span>
+                    <span className="mt-1 block text-sm font-bold text-green-700">+₹{addon.price}</span>
+                    <span className="mt-2 block text-xs text-gray-500">
+                      {selectedAddons.includes(addon.id) ? "✓ Added" : "Add +"}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
             <div className="mt-6 flex items-center justify-between">
               <p className="font-bold text-[#14532D]">Quantity</p>
-
               <div className="flex items-center gap-3">
-                <button disabled={qty === 1} onClick={() => setQty(qty - 1)} className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] hover:bg-[#BBF7D0] disabled:cursor-not-allowed disabled:opacity-40">
+                <button disabled={qty === 1} onClick={() => setQty(qty - 1)} className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] disabled:opacity-40">
                   -
                 </button>
-
                 <span className="min-w-8 text-center text-lg font-bold text-[#14532D]">{qty}</span>
-
-                <button onClick={() => setQty(qty + 1)} className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D] hover:bg-[#BBF7D0]">
+                <button onClick={() => setQty(qty + 1)} className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg bg-[#DCFCE7] text-xl font-bold text-[#14532D]">
                   +
                 </button>
               </div>
@@ -244,12 +386,32 @@ function Meals({ cartItems, setCartItems }) {
 
             <div className="mt-5 space-y-3 rounded-xl bg-green-50 p-4 font-semibold text-[#166534]">
               <p className="flex justify-between">
+                <span>Price per serving</span>
+                <span>₹{selected.price + addonPrice}</span>
+              </p>
+              <p className="flex justify-between">
                 <span>Total Price</span>
-                <span>₹{selected.price * qty}</span>
+                <span>₹{(selected.price + addonPrice) * qty}</span>
               </p>
               <p className="flex justify-between">
                 <span>Total Calories</span>
-                <span>{selected.calories * qty} kcal</span>
+                <span>{(selected.calories + addonCalories) * qty} kcal</span>
+              </p>
+              <p className="flex justify-between">
+                <span>Total Protein</span>
+                <span>{totalNutrition.protein * qty} g</span>
+              </p>
+              <p className="flex justify-between">
+                <span>Total Carbs</span>
+                <span>{totalNutrition.carbs * qty} g</span>
+              </p>
+              <p className="flex justify-between">
+                <span>Total Fat</span>
+                <span>{totalNutrition.fat * qty} g</span>
+              </p>
+              <p className="flex justify-between">
+                <span>Total Fiber</span>
+                <span>{totalNutrition.fiber * qty} g</span>
               </p>
             </div>
 
