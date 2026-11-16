@@ -5,24 +5,25 @@ function CartPage({ cartItems = [], setCartItems }) {
   const navigate = useNavigate()
 
   const getItemPrice = item => {
+    const foodPrice = Number(item.price) || 0
     const addOnPrice = (item.customizations || []).reduce(
-      (total, option) => total + option.price, 0
+      (total, option) => total + (Number(option.price) || 0), 0
     )
-    return item.price + addOnPrice
+    return foodPrice + addOnPrice
   }
 
   const totalPrice = cartItems.reduce(
-    (total, item) => total + getItemPrice(item) * item.quantity, 0
+    (total, item) => total + getItemPrice(item) * (Number(item.quantity) || 1), 0
   )
 
   const totalItems = cartItems.reduce(
-    (sum, item) => sum + item.quantity, 0
+    (sum, item) => sum + (Number(item.quantity) || 1), 0
   )
 
   function updateQuantity(id, amount) {
     setCartItems(cartItems.map(item =>
       item.id === id
-        ? { ...item, quantity: Math.max(1, item.quantity + amount) }
+        ? { ...item, quantity: Math.max(1, (Number(item.quantity) || 1) + amount) }
         : item
     ))
   }
@@ -76,17 +77,17 @@ function CartPage({ cartItems = [], setCartItems }) {
 
                 <div className="flex items-center gap-3">
                   <span className="font-semibold text-[#111827]">Food Price:</span>
-                  <span>₹{item.price}</span>
+                  <span>₹{Number(item.price) || 0}</span>
                 </div>
 
                 {item.customizations && item.customizations.length > 0 && (
                   <div>
                     <p className="mb-2 font-semibold text-[#111827]">Customizations:</p>
                     <div className="space-y-2">
-                      {item.customizations.map(option => (
-                        <div key={option.name} className="flex justify-between text-sm">
+                      {item.customizations.map((option, index) => (
+                        <div key={`${option.name}-${index}`} className="flex justify-between text-sm">
                           <span>{option.name}</span>
-                          <span>+ ₹{option.price}</span>
+                          <span>+ ₹{Number(option.price) || 0}</span>
                         </div>
                       ))}
                     </div>
@@ -115,7 +116,7 @@ function CartPage({ cartItems = [], setCartItems }) {
 
                 <div className="flex items-center gap-3">
                   <span className="font-semibold text-[#111827]">Calories:</span>
-                  <span>{item.calories * item.quantity} kcal</span>
+                  <span>{(Number(item.calories) || 0) * (Number(item.quantity) || 1)} kcal</span>
                 </div>
               </div>
 
@@ -126,10 +127,10 @@ function CartPage({ cartItems = [], setCartItems }) {
                   Order Summary
                 </h2>
                 <p className="text-[1.05rem] text-[#111827]">
-                  {item.quantity} x {item.name} — ₹{getItemPrice(item) * item.quantity}
+                  {item.quantity} x {item.name} — ₹{getItemPrice(item) * (Number(item.quantity) || 1)}
                 </p>
                 <p className="text-[1.05rem] font-semibold text-[#166534]">
-                  Total: ₹{getItemPrice(item) * item.quantity}
+                  Total: ₹{getItemPrice(item) * (Number(item.quantity) || 1)}
                 </p>
               </div>
 
@@ -162,7 +163,7 @@ function CartPage({ cartItems = [], setCartItems }) {
             {cartItems.map(item => (
               <div key={item.id} className="flex justify-between gap-4">
                 <span>{item.quantity} x {item.name}</span>
-                <span>₹{getItemPrice(item) * item.quantity}</span>
+                <span>₹{getItemPrice(item) * (Number(item.quantity) || 1)}</span>
               </div>
             ))}
           </div>
