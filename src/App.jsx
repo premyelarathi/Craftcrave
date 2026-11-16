@@ -25,57 +25,21 @@ function AppContent() {
   return (
     <div>
       {pathname !== "/login" &&
-       pathname !== "/adminlogin" &&
+       pathname !== "/admin" &&
        <Navbar cartCount={cartCount} />}
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              cartItems={cartItems}
-              setCartItems={setCartItems}
-            />
-          }
-        />
-
-        <Route
-          path="/meals"
-          element={
-            <Meals
-              cartItems={cartItems}
-              setCartItems={setCartItems}
-            />
-          }
-        />
-
+        <Route path="/" element={<Home cartItems={cartItems} setCartItems={setCartItems} />} />
+        <Route path="/meals" element={<Meals cartItems={cartItems} setCartItems={setCartItems} />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/adminlogin" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLogin />} />
         <Route path="/myorders" element={<MyOrders />} />
-        <Route path="/adminorders" element={<AdminOrders />} />
+        <Route path="/aorders" element={<AdminOrders />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/track-order/:id" element={<TrackOrder />} />
-
-        <Route
-          path="/cart"
-          element={
-            <CartPage
-              cartItems={cartItems}
-              setCartItems={setCartItems}
-            />
-          }
-        />
-
-        <Route
-          path="/Checkout"
-          element={
-            <Checkout
-              cartItems={cartItems}
-              setCartItems={setCartItems}
-            />
-          }
-        />
+        <Route path="/cart" element={<CartPage cartItems={cartItems} setCartItems={setCartItems} />} />
+        <Route path="/Checkout" element={<Checkout cartItems={cartItems} setCartItems={setCartItems} />} />
       </Routes>
     </div>
   )

@@ -18,7 +18,7 @@ function AdminLogin() {
     if (email === adminEmail && password === adminPassword) {
       localStorage.setItem("adminLoggedIn", "true")
       setError("")
-      navigate("/adminorders")
+      navigate("/aorders")
     } else {
       setError("Invalid Email or Password")
     }

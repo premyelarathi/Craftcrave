@@ -58,7 +58,7 @@ function Login() {
         </Link>
 
         <p className="mb-1 text-xs font-bold uppercase tracking-[0.14em] text-[#166534]">
-          Welcome to CraftCrave
+          Welcome to CraveCraft
         </p>
 
         <h1 id="login-title" className="mt-2 text-2xl font-bold text-[#14532D]">
@@ -98,6 +98,16 @@ function Login() {
         <p className="mt-5 text-center text-xs text-[#365C43]">
           Fresh food. Fitness first.
         </p>
+
+        <div className="mt-5 border-t border-[#DCFCE7] pt-4 text-center">
+          <p className="text-sm text-[#365C43]">
+            Are you an Admin?
+            <Link to="/admin" className="ml-1 font-semibold text-[#166534] hover:underline cursor-pointer">
+              Admin Login
+            </Link>
+          </p>
+        </div>
+
       </section>
     </main>
   )
