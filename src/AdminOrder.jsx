@@ -1,5 +1,5 @@
 
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useRef } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 function AdminOrders() {
@@ -8,6 +8,10 @@ function AdminOrders() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [filter, setFilter] = useState("All")
+  const [newOrder, setNewOrder] = useState(null)
+
+  const knownOrderIds = useRef(new Set())
+  const hasLoadedOrders = useRef(false)
 
   const statusOptions = [
     "Pending",
@@ -18,7 +22,6 @@ function AdminOrders() {
     "Delivered"
   ]
 
-  // Fetch All Orders
   const getOrders = useCallback(async () => {
     try {
       setLoading(true)
@@ -32,6 +35,8 @@ function AdminOrders() {
 
       const data = await response.json()
       setOrders(data)
+      knownOrderIds.current = new Set(data.map(order => order._id))
+      hasLoadedOrders.current = true
 
     } catch (error) {
       setError(error.message)
@@ -40,12 +45,62 @@ function AdminOrders() {
     }
   }, [])
 
-  // Admin Login Check
+  // Admin Login Check and Automatic New Order Detection
   useEffect(() => {
     if (localStorage.getItem("adminLoggedIn") !== "true") {
-      navigate("/adminlogin", { replace: true })
-    } else {
-      getOrders()
+      navigate("/admin", { replace: true })
+      return
+    }
+
+    let active = true
+    let timer
+
+    async function checkNewOrders() {
+      try {
+        const response = await fetch("https://craftcrave.onrender.com/api/admin/orders")
+
+        if (!response.ok) return
+
+        const data = await response.json()
+
+        if (!active) return
+
+        if (!hasLoadedOrders.current) {
+          knownOrderIds.current = new Set(data.map(order => order._id))
+          hasLoadedOrders.current = true
+        } else {
+          const newOrders = data.filter(
+            order => !knownOrderIds.current.has(order._id)
+          )
+
+          if (newOrders.length > 0) {
+            setNewOrder(newOrders[0])
+          }
+
+          knownOrderIds.current = new Set(data.map(order => order._id))
+        }
+
+        setOrders(data)
+        setError("")
+
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+
+    async function startPolling() {
+      await getOrders()
+
+      if (active) {
+        timer = setInterval(checkNewOrders, 5000)
+      }
+    }
+
+    startPolling()
+
+    return () => {
+      active = false
+      clearInterval(timer)
     }
   }, [navigate, getOrders])
 
@@ -71,8 +126,8 @@ function AdminOrders() {
         throw new Error(data.message || "Status update failed")
       }
 
-      setOrders((previous) =>
-        previous.map((order) =>
+      setOrders(previous =>
+        previous.map(order =>
           order._id === id ? data.order : order
         )
       )
@@ -85,7 +140,7 @@ function AdminOrders() {
   // Logout
   const handleLogout = () => {
     localStorage.removeItem("adminLoggedIn")
-    navigate("/adminlogin", { replace: true })
+    navigate("/admin", { replace: true })
   }
 
   // Dashboard Calculations
@@ -95,14 +150,14 @@ function AdminOrders() {
   )
 
   const pendingOrders = orders.filter(
-    (order) => order.orderStatus === "Pending"
+    order => order.orderStatus === "Pending"
   ).length
 
   const deliveredOrders = orders.filter(
-    (order) => order.orderStatus === "Delivered"
+    order => order.orderStatus === "Delivered"
   ).length
 
-  const filteredOrders = orders.filter((order) => {
+  const filteredOrders = orders.filter(order => {
     if (filter === "All") return true
     return order.orderStatus === filter
   })
@@ -144,7 +199,7 @@ function AdminOrders() {
               Admin Dashboard
             </h1>
             <p className="mt-1 text-gray-600">
-              CraftCrave Order Management
+              CraveCraft Order Management
             </p>
           </div>
 
@@ -164,6 +219,30 @@ function AdminOrders() {
             </button>
           </div>
         </div>
+
+        {/* New Order Notification */}
+        {newOrder && (
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-green-300 bg-green-100 p-5 shadow">
+            <div>
+              <h2 className="text-lg font-bold text-green-900">
+                🔔 You have a new order!
+              </h2>
+              <p className="mt-1 text-green-800">
+                Order by <strong>{newOrder.customerName}</strong>
+              </p>
+              <p className="mt-1 text-sm text-green-700">
+                A new customer order has been received.
+              </p>
+            </div>
+
+            <button
+              onClick={() => setNewOrder(null)}
+              className="rounded-lg bg-green-800 px-4 py-2 font-semibold text-white hover:bg-green-900 cursor-pointer"
+            >
+              Dismiss
+            </button>
+          </div>
+        )}
 
         {/* Dashboard Cards */}
         <div className="mb-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -204,12 +283,12 @@ function AdminOrders() {
 
           <select
             value={filter}
-            onChange={(e) => setFilter(e.target.value)}
+            onChange={e => setFilter(e.target.value)}
             className="rounded-lg border border-green-700 bg-white px-4 py-2 font-semibold text-green-900 outline-none cursor-pointer"
           >
             <option value="All">All Orders</option>
 
-            {statusOptions.map((status) => (
+            {statusOptions.map(status => (
               <option key={status} value={status}>
                 {status}
               </option>
@@ -224,7 +303,7 @@ function AdminOrders() {
           </p>
         ) : (
           <div className="space-y-6">
-            {filteredOrders.map((order) => (
+            {filteredOrders.map(order => (
               <div
                 key={order._id}
                 className="rounded-xl border border-green-200 bg-white p-6 shadow-md"
@@ -249,12 +328,10 @@ function AdminOrders() {
 
                     <select
                       value={order.orderStatus}
-                      onChange={(e) =>
-                        updateStatus(order._id, e.target.value)
-                      }
+                      onChange={e => updateStatus(order._id, e.target.value)}
                       className="w-48 rounded-lg border-2 border-green-700 bg-green-900 px-3 py-2 font-semibold text-white outline-none cursor-pointer"
                     >
-                      {statusOptions.map((status) => (
+                      {statusOptions.map(status => (
                         <option
                           key={status}
                           value={status}
