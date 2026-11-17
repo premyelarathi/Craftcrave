@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react"
 import { useLocation, useSearchParams } from "react-router-dom"
 import { foodItems, nutritionInfo, customizationOptions } from "./Meals"
@@ -6,7 +5,7 @@ import banner from "./assets/Images/banner.jpeg"
 import Categories from "./Categories"
 import Footer from "./Footer"
 
-function Home({ cartItems, setCartItems }) {
+function Home({ cartItems, setCartItems, setNotification }) {
   const [activeCategory, setActiveCategory] = useState("")
   const [selectedItem, setSelectedItem] = useState(null)
   const [quantity, setQuantity] = useState(1)
@@ -131,6 +130,11 @@ function Home({ cartItems, setCartItems }) {
     } else {
       setCartItems([...cartItems, newItem])
     }
+
+    setNotification({
+      message: `${quantity} ${quantity === 1 ? "item" : "items"} added to cart`,
+      id: Date.now() + Math.random()
+    })
 
     setSelectedItem(null)
     setQuantity(1)

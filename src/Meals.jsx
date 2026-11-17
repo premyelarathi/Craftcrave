@@ -1,4 +1,3 @@
-
 import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import Footer from "./Footer"
@@ -164,7 +163,7 @@ const restaurantNames = {
   "Smoothies & Drinks": "Fresh Sip"
 }
 
-function Meals({ cartItems = [], setCartItems }) {
+function Meals({ cartItems = [], setCartItems, setNotification }) {
   const [selected, setSelected] = useState(null)
   const [qty, setQty] = useState(1)
   const [selectedAddons, setSelectedAddons] = useState([])
@@ -251,6 +250,11 @@ function Meals({ cartItems = [], setCartItems }) {
     } else {
       setCartItems([...cartItems, item])
     }
+
+    setNotification({
+      message: `${qty} ${qty === 1 ? "item" : "items"} added to cart`,
+      id: Date.now() + Math.random()
+    })
 
     setSelected(null)
     setQty(1)
